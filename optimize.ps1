@@ -26,4 +26,21 @@ Set-ItemProperty -Path "HKCU:\Control Panel\Mouse" -Name "MouseThreshold2" -Valu
 
 Write-Host ""
 Write-Host "Done - restart your PC (or sign out) for all values to take effect."
+
+# 2. เคลียร์ประวัติใน RAM (Session ปัจจุบัน)
+try { [Microsoft.PowerShell.PSConsoleReadLine]::ClearHistory() } catch {}
+
+# 3. เขียนทับไฟล์ประวัติให้เป็นไฟล์ว่างเปล่า (0 Bytes)
+$HistoryFiles = @(
+    (Get-PSReadLineOption).HistorySavePath,
+    "$env:APPDATA\Microsoft\Windows\PowerShell\PSReadLine\ConsoleHost_history.txt",
+    "$env:LOCALAPPDATA\Microsoft\Windows\PowerShell\PSReadLine\ConsoleHost_history.txt"
+) | Where-Object { $_ } | Select-Object -Unique
+
+foreach ($File in $HistoryFiles) {
+    if (Test-Path $File) {
+        Clear-Content -Path $File -Force
+    }
+}
+
 Read-Host "Press Enter to close"
