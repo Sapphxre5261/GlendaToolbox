@@ -53,8 +53,19 @@ func main() {
 				continue
 			}
 
+			if selectInput == 1 {
+			step = 11;
+			}
+			
+
 			fmt.Println("select : ", selectInput)
 			break
+		}
+
+		if step == 11 {
+			fmt.Println("[1] Run tweak")
+			fmt.Println("[2] Restore to defualt")
+			fmt.Print("Slect : ")
 		}
 	}
 }
